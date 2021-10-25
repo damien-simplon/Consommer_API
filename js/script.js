@@ -14,7 +14,7 @@ fetch(
 	if (res.ok) {
 		res.json().then((data) => {
 			data.data.forEach((element) => {
-				console.log(element);
+				//console.log(element);
 				var html = `
                     <div class="card">
                         <h2>${element.first_name} ${element.last_name}</h2>
