@@ -1,7 +1,4 @@
 window.onload = function () {
-	var url = 'https://reqres.in/api/users?';
-	var body = document.getElementById('main');
-
 	var functionGET = function (noForm) {
 		fetch(
 			url +
@@ -163,12 +160,50 @@ window.onload = function () {
 			}
 		});
 	};
+	var functionLOGIN = function (e) {
+		e.preventDefault();
+		var datas = {
+			email: document.getElementById('email').value,
+			password: document.getElementById('password').value,
+		};
 
+		var requestPOST = new Request(urlLogin, {
+			method: 'POST',
+			body: JSON.stringify(datas),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+
+		fetch(requestPOST)
+			.then((res) => {
+				if (res.ok) {
+					console.log(res);
+					res.json().then((data) => {
+						console.log(data);
+						localStorage.setItem('token', data.token);
+					});
+				} else {
+					console.log('erreur');
+				}
+			})
+			.catch(function (error) {
+				console.log("Il y a eu un problème avec l'opération fetch: " + error.message);
+			});
+	};
+
+	var url = 'https://reqres.in/api/users?';
+	var urlLogin = 'https://reqres.in/api/login';
+	var body = document.getElementById('main');
+	var form = document.getElementById('formData');
 	var noForm = 0;
 
-	var form = document.getElementById('formData');
 	if (form) {
-		form.addEventListener('submit', functionPOST);
+		if (form.classList.contains('login')) {
+			form.addEventListener('submit', functionLOGIN);
+		} else {
+			form.addEventListener('submit', functionPOST);
+		}
 	}
 	if (body) {
 		if (body.classList.contains('edit')) {
