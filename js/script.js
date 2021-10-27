@@ -18,7 +18,7 @@ window.onload = function () {
 					data.data.forEach((element) => {
 						//console.log(element);
 						var html = ``;
-						if (noForm == true) {
+						if (noForm == 0) {
 							html = `
                                 <div id="${element.id}" class="card">
                                     <h2>${element.first_name} ${element.last_name}</h2>
@@ -27,7 +27,7 @@ window.onload = function () {
                                 </div>
                             `;
 						}
-						if (noForm == false) {
+						if (noForm == 1) {
 							html = `
                                 <form id="formData${element.id}" action="" method="put" class="card">
                                     <div id="formCard">
@@ -62,6 +62,21 @@ window.onload = function () {
                                     </div>
                                 </form>
                         `;
+						}
+						if (noForm == 2) {
+							html = `
+								<form id="formData${element.id}" action="" method="put" class="card">
+									<div class="formLine">
+										<input type="hidden" name="id" id="id" value="${element.id}" required />
+									</div>
+									<h2>${element.first_name} ${element.last_name}</h2>
+									<img src="${element.avatar}" alt="Avatar de ${element.first_name} ${element.last_name}"/>
+									<h3><a href="mailto:${element.email}">${element.email}</a></h3>
+									<div class="formLine">
+										<input type="submit" value="Suppression" />
+									</div>
+                                </form>
+							`;
 						}
 						body.insertAdjacentHTML('beforeend', html);
 					});
@@ -126,8 +141,30 @@ window.onload = function () {
 			}
 		});
 	};
+	var functionDELETE = function (e) {
+		e.preventDefault();
+		console.log(e.target[0]);
+		var datas = {
+			id: e.target[0].value,
+		};
 
-	var noForm = true;
+		var requestPUT = new Request(url, {
+			method: 'DELETE',
+			body: JSON.stringify(datas),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		fetch(requestPUT).then((res) => {
+			if (res.ok) {
+				console.log(res);
+			} else {
+				console.log('erreur');
+			}
+		});
+	};
+
+	var noForm = 0;
 
 	var form = document.getElementById('formData');
 	if (form) {
@@ -135,7 +172,7 @@ window.onload = function () {
 	}
 	if (body) {
 		if (body.classList.contains('edit')) {
-			noForm = false;
+			noForm = 1;
 			functionGET(noForm);
 			setTimeout(function () {
 				var forms = document.getElementsByTagName('form');
@@ -143,8 +180,16 @@ window.onload = function () {
 					item.addEventListener('submit', functionPUT);
 				}
 			}, 100);
+		} else if (body.classList.contains('delete')) {
+			noForm = 2;
+			functionGET(noForm);
+			setTimeout(function () {
+				var cards = document.getElementsByClassName('card');
+				for (let item of cards) {
+					item.addEventListener('submit', functionDELETE);
+				}
+			}, 100);
 		} else {
-			noForm = true;
 			functionGET(noForm);
 		}
 	}
