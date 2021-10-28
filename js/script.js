@@ -189,5 +189,5 @@ window.onload = function () {
 	if (main && main.classList.contains('login')) {
 		functionLOGIN(urlLogin);
 	}
-	/
+	
 };
