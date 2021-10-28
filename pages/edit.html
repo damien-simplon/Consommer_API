@@ -8,19 +8,38 @@
 		<title>Document</title>
 	</head>
 	<body>
-		<nav id="menu">
-			<input type="checkbox" id="responsive-menu" /><label></label>
-			<ul>
-				<li><a href="../index.html">GET</a></li>
-				<li><a href="../pages/create.html">POST</a></li>
-				<li><a href="../pages/edit.html">PUT</a></li>
-				<li><a href="../pages/delete.html">DELETE</a></li>
-				<li><a href="../pages/login.html">Login</a></li>
-			</ul>
-		</nav>
+		<div id="accueil"><a href="../index.html">Accueil</a></div>
+		<div id="create"><a href="../pages/create.html">Créer un utilisateur</a></div>
+		<div id="login"><a href="../pages/login.html">Login</a></div>
 
-		<div id="main" class="edit"></div>
-        
+		<div id="affichage"></div>
+		<div id="main" class="edit">
+			<form method="put">
+				<div class="formLine">
+					<input type="hidden" id="id" required />
+				</div>
+				<div class="formLine">
+					<label for="firstName">First name: </label>
+					<input type="text" name="firstName" id="first_name" required />
+				</div>
+				<div class="formLine">
+					<label for="lastName">Last name: </label>
+					<input type="text" name="lastName" id="last_name" required />
+				</div>
+				<div class="formLine">
+					<label for="email">Email: </label>
+					<input type="email" name="email" id="email" required />
+				</div>
+				<div class="formLine">
+					<label for="avatar">Profile picture:</label>
+					<input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" />
+				</div>
+				<div class="formLine">
+					<input type="submit" value="Modification" />
+				</div>
+			</form>
+		</div>
+
 		<script src="../js/script.js"></script>
 	</body>
 </html>
