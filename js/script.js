@@ -9,6 +9,7 @@ window.onload = function () {
 
 		const res = await fetch(requestGET);
 		console.log(res);
+		affichage.innerHTML = `<p>` + 'Status : ' + res.status + `</p>`;
 		var liste = '';
 		if (!res) {
 			console.log('error');
@@ -16,6 +17,9 @@ window.onload = function () {
 			if (res.ok) {
 				var value = await res.json();
 				console.log(value);
+				for (let i = 0; i < value.data.length; i++) {
+					affichage.innerHTML += `<pre>` + JSON.stringify(value.data[i]) + `</pre>`;
+				}
 				liste = value.data;
 				console.log(liste);
 			}
@@ -41,15 +45,24 @@ window.onload = function () {
 		fetch(requestPUT).then((res) => {
 			if (res.ok) {
 				console.log(res);
+				affichage.innerHTML = `<p>` + 'Status : ' + res.status + `</p>`;
 				res.json().then((data) => {
 					console.log(data);
+					if (data.data.length > 0) {
+						for (let i = 0; i < data.data.length; i++) {
+							affichage.innerHTML +=
+								`<pre>` + JSON.stringify(data.data[i]) + `</pre>`;
+						}
+					} else {
+						affichage.innerHTML += `<pre>` + JSON.stringify(data) + `</pre>`;
+					}
 				});
 			} else {
 				console.log('erreur');
 			}
 		});
 	};
-	var functionDELETE = function (url,id) {
+	var functionDELETE = function (url, id) {
 		var datas = {
 			id: id,
 		};
@@ -64,16 +77,16 @@ window.onload = function () {
 		fetch(requestPUT).then((res) => {
 			if (res.ok) {
 				console.log(res);
+				affichage.innerHTML = `<p>` + 'Status : ' + res.status + `</p>`;
 			} else {
 				console.log('erreur');
 			}
 		});
 	};
-	var functionPOST = function (event) {
-		event.preventDefault();
+	var functionPOST = function (url) {
 		var datas = {
-			first_name: document.getElementById('firstName').value,
-			last_name: document.getElementById('lastName').value,
+			first_name: document.getElementById('first_name').value,
+			last_name: document.getElementById('last_name').value,
 			email: document.getElementById('email').value,
 			avatar: document.getElementById('avatar').value,
 		};
@@ -88,22 +101,23 @@ window.onload = function () {
 		fetch(requestPOST).then((res) => {
 			if (res.ok) {
 				console.log(res);
+				affichage.innerHTML = `<p>` + 'Status : ' + res.status + `</p>`;
 				res.json().then((data) => {
 					console.log(data);
+					affichage.innerHTML += `<pre>` + JSON.stringify(data) + `</pre>`;
 				});
 			} else {
 				console.log('erreur');
 			}
 		});
 	};
-	var functionLOGIN = function (e) {
-		e.preventDefault();
+	var functionLOGIN = function (url) {
 		var datas = {
 			email: document.getElementById('email').value,
 			password: document.getElementById('password').value,
 		};
 
-		var requestPOST = new Request(urlLogin, {
+		var requestPOST = new Request(url, {
 			method: 'POST',
 			body: JSON.stringify(datas),
 			headers: {
@@ -115,11 +129,14 @@ window.onload = function () {
 			.then((res) => {
 				if (res.ok) {
 					console.log(res);
+					affichage.innerHTML = `<p>` + 'Status : ' + res.status + `</p>`;
 					res.json().then((data) => {
 						console.log(data);
+						affichage.innerHTML = `<pre>` + JSON.stringify(data) + `</pre>`;
 						localStorage.setItem('token', data.token);
 					});
 				} else {
+					affichage.innerHTML = `<p>` + 'Status : ' + res.status + `</p>`;
 					console.log('erreur');
 				}
 			})
@@ -134,6 +151,7 @@ window.onload = function () {
 	var urlLogin = 'https://reqres.in/api/login';
 	var main = document.getElementById('main');
 	var form = document.getElementsByTagName('form').item(0);
+	var affichage = document.getElementById('affichage');
 
 	if (main && main.classList.contains('read')) {
 		var liste = functionGET(urlGet);
@@ -176,7 +194,7 @@ window.onload = function () {
 	if (main && main.classList.contains('delete')) {
 		var liste = functionGET(urlGet);
 		liste.then((list) => {
-		let searchParams = new URLSearchParams(window.location.search);
+			let searchParams = new URLSearchParams(window.location.search);
 			if (searchParams.has('user')) {
 				var param = searchParams.get('user') - 1;
 			}
@@ -184,10 +202,15 @@ window.onload = function () {
 		});
 	}
 	if (main && main.classList.contains('create')) {
-		functionCREATE(url);
+		form.addEventListener('submit', function (e) {
+			e.preventDefault();
+			functionPOST(url);
+		});
 	}
 	if (main && main.classList.contains('login')) {
-		functionLOGIN(urlLogin);
+		form.addEventListener('submit', function (e) {
+			e.preventDefault();
+			functionLOGIN(urlLogin);
+		});
 	}
-	
 };
