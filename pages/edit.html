@@ -20,27 +20,35 @@
 		<div id="affichage"></div>
 		<div id="main" class="edit">
 			<form method="put">
-				<div class="formLine">
-					<input type="hidden" id="id" required />
-				</div>
-				<div class="formLine">
-					<label for="firstName">First name: </label>
-					<input type="text" name="firstName" id="first_name" required />
-				</div>
-				<div class="formLine">
-					<label for="lastName">Last name: </label>
-					<input type="text" name="lastName" id="last_name" required />
-				</div>
-				<div class="formLine">
-					<label for="email">Email: </label>
-					<input type="email" name="email" id="email" required />
-				</div>
-				<div class="formLine">
-					<label for="avatar">Profile picture:</label>
-					<input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" />
-				</div>
-				<div class="formLine">
-					<input type="submit" value="Modification" />
+				<div id="formCard">
+					<div class="formLine">
+						<input type="hidden" id="id" required />
+					</div>
+					<div class="formLine">
+						<label for="firstName">First name: </label>
+						<input type="text" name="firstName" id="first_name" required />
+					</div>
+					<div class="formLine">
+						<label for="lastName">Last name: </label>
+						<input type="text" name="lastName" id="last_name" required />
+					</div>
+					<div class="formLine">
+						<label for="email">Email: </label>
+						<input type="email" name="email" id="email" required />
+					</div>
+					<div class="formLine">
+						<label for="avatar">Profile picture:</label>
+						<input
+							type="file"
+							id="avatar"
+							name="avatar"
+							accept="image/*"
+						/>
+					</div>
+					<div id="imgDisplay"></div>
+					<div class="formLine">
+						<input type="submit" value="Modification" />
+					</div>
 				</div>
 			</form>
 		</div>

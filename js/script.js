@@ -48,7 +48,7 @@ window.onload = function () {
 				affichage.innerHTML = `<p>` + 'Status : ' + res.status + `</p>`;
 				res.json().then((data) => {
 					console.log(data);
-					if (data.data.length > 0) {
+					if (data.length > 0) {
 						for (let i = 0; i < data.data.length; i++) {
 							affichage.innerHTML +=
 								`<pre>` + JSON.stringify(data.data[i]) + `</pre>`;
@@ -151,6 +151,11 @@ window.onload = function () {
 	var urlLogin = 'https://reqres.in/api/login';
 	var main = document.getElementById('main');
 	var form = document.getElementsByTagName('form').item(0);
+	if (form) {
+		var img = document.getElementById('avatar');
+		var imgDisplay = document.getElementById('imgDisplay');
+		console.log(img);
+	}
 	var affichage = document.getElementById('affichage');
 
 	if (main && main.classList.contains('read')) {
@@ -182,6 +187,7 @@ window.onload = function () {
 				document.getElementById('last_name').setAttribute('value', list[param].last_name);
 				document.getElementById('email').setAttribute('value', list[param].email);
 				document.getElementById('avatar').setAttribute('value', list[param].avatar);
+				document.getElementById('imgDisplay').innerHTML = `<img src='${list[param].avatar}'/>`;
 			} else {
 				console.log('error');
 			}
@@ -189,6 +195,17 @@ window.onload = function () {
 		form.addEventListener('submit', function (e) {
 			e.preventDefault();
 			functionPUT(url);
+		});
+		img.addEventListener('change', function () {
+			const files = img.files[0];
+			if (files) {
+				const fileReader = new FileReader();
+				fileReader.readAsDataURL(files);
+				fileReader.addEventListener('load', function () {
+					imgDisplay.style.display = 'block';
+					imgDisplay.innerHTML = '<img src="' + this.result + '" />';
+				});
+			}
 		});
 	}
 	if (main && main.classList.contains('delete')) {
@@ -205,6 +222,17 @@ window.onload = function () {
 		form.addEventListener('submit', function (e) {
 			e.preventDefault();
 			functionPOST(url);
+		});
+		img.addEventListener('change', function () {
+			const files = img.files[0];
+			if (files) {
+				const fileReader = new FileReader();
+				fileReader.readAsDataURL(files);
+				fileReader.addEventListener('load', function () {
+					imgDisplay.style.display = 'block';
+					imgDisplay.innerHTML = '<img src="' + this.result + '" />';
+				});
+			}
 		});
 	}
 	if (main && main.classList.contains('login')) {
